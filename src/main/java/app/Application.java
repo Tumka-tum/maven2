@@ -11,14 +11,17 @@ public class Application implements Consumer<Event> {
     /**
      * окно приложения
      */
-    private final Window window;
+    private final Window window = null;
 
     /**
      * Конструктор окна приложения
      */
     public Application() {
+        window.setTitle("Java 2D");
         window = App.makeWindow();
         window.setEventListener(this);
+        window.setWindowSize(900, 900);
+        window.setWindowPosition(100, 100);
         window.setVisible(true);
     }
 
