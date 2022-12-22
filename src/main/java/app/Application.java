@@ -6,6 +6,7 @@ import io.github.humbleui.skija.Canvas;
 import io.github.humbleui.skija.Paint;
 import io.github.humbleui.skija.RRect;
 import io.github.humbleui.skija.Surface;
+import misc.CoordinateSystem2i;
 import misc.Misc;
 
 import java.io.File;
@@ -66,29 +67,24 @@ public class Application implements Consumer<Event> {
             window.close();
         } else if (e instanceof EventFrameSkija ee) {
             Surface s = ee.getSurface();
-            paint(s.getCanvas(), s.getWidth(), s.getHeight());
+            paint(s.getCanvas(), new CoordinateSystem2i(
+                    s.getWidth() / 3, s.getHeight() / 3,
+                    s.getWidth() / 3,  s.getHeight() / 3));
         }
     }
 
     /**
      * Рисование
      *
-     * @param canvas низкоуровневый инструмент рисования примитивов от Skija
-     * @param height высота окна
-     * @param width  ширина окна
+     * @param canvas   низкоуровневый инструмент рисования примитивов от Skija
+     * @param windowCS СК окна
      */
-    public void paint(Canvas canvas, int height, int width) {
+    public void paint(Canvas canvas, CoordinateSystem2i windowCS) {
         canvas.save();
         canvas.clear(APP_BACKGROUND_COLOR);
-
-        int rX = width / 3;
-        int rY = height / 3;
-        int rWidth = width / 3;
-        int rHeight = height / 3;
         Paint paint = new Paint();
         paint.setColor(Misc.getColor(100, 255, 255, 255));
-        canvas.drawRRect(RRect.makeXYWH(rX, rY, rWidth, rHeight, 4), paint);
-
+        canvas.drawRRect(windowCS.getRRect(4), paint);
         canvas.restore();
     }
 }
