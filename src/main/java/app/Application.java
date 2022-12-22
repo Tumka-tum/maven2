@@ -2,7 +2,11 @@ package app;
 
 import io.github.humbleui.jwm.*;
 import io.github.humbleui.jwm.skija.EventFrameSkija;
+import io.github.humbleui.skija.Canvas;
+import io.github.humbleui.skija.Paint;
+import io.github.humbleui.skija.RRect;
 import io.github.humbleui.skija.Surface;
+import misc.Misc;
 
 import java.io.File;
 import java.util.function.Consumer;
@@ -62,7 +66,29 @@ public class Application implements Consumer<Event> {
             window.close();
         } else if (e instanceof EventFrameSkija ee) {
             Surface s = ee.getSurface();
-            s.getCanvas().clear(APP_BACKGROUND_COLOR);
+            paint(s.getCanvas(), s.getWidth(), s.getHeight());
         }
+    }
+
+    /**
+     * Рисование
+     *
+     * @param canvas низкоуровневый инструмент рисования примитивов от Skija
+     * @param height высота окна
+     * @param width  ширина окна
+     */
+    public void paint(Canvas canvas, int height, int width) {
+        canvas.save();
+        canvas.clear(APP_BACKGROUND_COLOR);
+
+        int rX = width / 3;
+        int rY = height / 3;
+        int rWidth = width / 3;
+        int rHeight = height / 3;
+        Paint paint = new Paint();
+        paint.setColor(Misc.getColor(100, 255, 255, 255));
+        canvas.drawRRect(RRect.makeXYWH(rX, rY, rWidth, rHeight, 4), paint);
+
+        canvas.restore();
     }
 }
