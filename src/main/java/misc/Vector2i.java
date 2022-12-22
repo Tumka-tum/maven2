@@ -141,5 +141,4 @@ public class Vector2i {
                 ", " + y +
                 ')';
     }
-
 }
