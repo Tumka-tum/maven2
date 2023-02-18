@@ -1,5 +1,6 @@
 package app;
 
+import controls.InputFactory;
 import controls.Label;
 import io.github.humbleui.jwm.*;
 import io.github.humbleui.jwm.skija.EventFrameSkija;
@@ -197,9 +198,18 @@ public class Application implements Consumer<Event> {
                             // завершаем обработку, иначе уже разрушенный контекст
                             // будет передан панелям
                             return;
-
                         }
                     }
+                switch (eventKey.getKey()) {
+                    case ESCAPE -> {
+                        window.close();
+                        // завершаем обработку, иначе уже разрушенный контекст
+                        // будет передан панелям
+                        return;
+
+                    }
+                    case TAB -> InputFactory.nextTab();
+                }
             }
         }
         panelControl.accept(e);
