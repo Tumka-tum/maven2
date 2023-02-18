@@ -43,6 +43,10 @@ public class Colors {
      */
     public static final int BUTTON_COLOR = Misc.getColor(80, 0, 0, 0);
     /**
+     * Цвет заливки панели
+     */
+    public static final int DIALOG_BACKGROUND_COLOR = Misc.getColor(230, 70, 38, 83);
+    /**
      * Цвет текста
      */
     public static final int FIELD_TEXT_COLOR = Misc.getColor(255, 0, 0, 0);
