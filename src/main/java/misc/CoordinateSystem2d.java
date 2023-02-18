@@ -226,4 +226,31 @@ public class CoordinateSystem2d {
         result = 31 * result + (min != null ? min.hashCode() : 0);
         return result;
     }
+    /**
+     * Получить вектор подобия двух систем координат
+     * (значения единичного размера, указанного в переданнной в аргументах СК в текущей СК)
+     *
+     * @param coordinateSystem система координат, подобие с которой нужно получить
+     * @return вектор подобий вдоль соответствующиъ осей координат
+     */
+    public Vector2d getSimilarity(CoordinateSystem2d coordinateSystem) {
+        return new Vector2d(
+                size.x / coordinateSystem.getSize().x,
+                size.y / coordinateSystem.getSize().y
+        );
+    }
+
+    /**
+     * Получить вектор подобия двух систем координат
+     * (значения единичного размера, указанного в переданнной в аргументах СК в текущей СК)
+     *
+     * @param coordinateSystem система координат, подобие с которой нужно получить
+     * @return вектор подобий вдоль соответствующиъ осей координат
+     */
+    public Vector2d getSimilarity(CoordinateSystem2i coordinateSystem) {
+        return new Vector2d(
+                size.x / (coordinateSystem.getSize().x - 1),
+                size.y / (coordinateSystem.getSize().y - 1)
+        );
+    }
 }
