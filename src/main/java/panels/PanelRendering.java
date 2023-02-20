@@ -3,6 +3,7 @@ package panels;
 import app.Point;
 import app.Task;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import dialogs.PanelSelectFile;
 import io.github.humbleui.jwm.Event;
 import io.github.humbleui.jwm.EventMouseButton;
 import io.github.humbleui.jwm.EventMouseScroll;
@@ -33,27 +34,7 @@ public class PanelRendering extends GridPanel {
      * Статистика fps
      */
     private final Stats fpsStats;
-    /**
-     * Сохранить файл
-     */
-    public static void save() {
-        String path = "src/main/resources/conf.json";
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.writeValue(new File(path), task);
-            PanelLog.success("Файл " + path + " успешно сохранён");
-        } catch (IOException e) {
-            PanelLog.error("не получилось записать файл \n" + e);
-        }
-    }
-    /**
-     * Загрузить файл
-     */
-    public static void load() {
-        String path = "src/main/resources/conf.json";
-        PanelLog.info("load from " + path);
-        loadFromFile(path);
-    }
+
 
     /**
      * Панель управления
@@ -142,5 +123,34 @@ public class PanelRendering extends GridPanel {
         fpsStats.paint(canvas, windowCS, FONT12, padding);
         if (lastInside && lastMove != null)
             task.paintMouse(canvas, windowCS, FONT12, lastWindowCS.getRelativePos(lastMove));
+    }
+    /**
+     * Сохранить файл
+     */
+    public static void save() {
+        PanelSelectFile.show("Выберите файл", path -> {
+            if (!path.isEmpty()) {
+                try {
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    objectMapper.writeValue(new File(path), task);
+                    PanelLog.success("Файл " + path + " успешно сохранён");
+                } catch (IOException e) {
+                    PanelLog.error("не получилось записать файл \n" + e);
+                }
+            }
+        });
+    }
+
+
+    /**
+     * Загрузить файл
+     */
+    public static void load() {
+        PanelSelectFile.show("Выберите файл", s -> {
+            if (!s.isEmpty()) {
+                PanelLog.info("load from " + s);
+                loadFromFile(s);
+            }
+        });
     }
 }
