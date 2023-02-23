@@ -264,9 +264,6 @@ public class Application implements Consumer<Event> {
                 panelLog.accept(e);
             }
         }
-        panelControl.accept(e);
-        panelRendering.accept(e);
-        panelLog.accept(e);
     }
 
     /**
