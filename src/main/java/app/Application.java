@@ -252,16 +252,16 @@ public class Application implements Consumer<Event> {
                     }
                     case TAB -> InputFactory.nextTab();
                 }
-                switch (currentMode) {
-                    case INFO -> panelInfo.accept(e);
-                    case FILE -> panelSelectFile.accept(e);
-                    case WORK -> {
-                        // передаём события на обработку панелям
-                        panelControl.accept(e);
-                        panelRendering.accept(e);
-                        panelLog.accept(e);
-                    }
-                }
+            }
+        }
+        switch (currentMode) {
+            case INFO -> panelInfo.accept(e);
+            case FILE -> panelSelectFile.accept(e);
+            case WORK -> {
+                // передаём события на обработку панелям
+                panelControl.accept(e);
+                panelRendering.accept(e);
+                panelLog.accept(e);
             }
         }
         panelControl.accept(e);

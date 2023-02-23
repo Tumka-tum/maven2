@@ -79,6 +79,8 @@ public abstract class Panel implements Consumer<Event> {
      * @param windowCS СК окна
      */
     public void paint(Canvas canvas, CoordinateSystem2i windowCS) {
+        // сохраняем СК окна
+        lastWindowCS = windowCS;
         // сохраняем область рисования
         canvas.save();
         // определяем область рисования
@@ -97,8 +99,6 @@ public abstract class Panel implements Consumer<Event> {
         paintImpl(canvas, windowCS);
         // восстанавливаем область рисования
         canvas.restore();
-        // сохраняем СК окна
-        lastWindowCS = windowCS;
     }
 
     /**
