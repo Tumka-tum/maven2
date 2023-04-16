@@ -140,7 +140,7 @@ public class PanelControl extends GridPanel {
                 PanelLog.warning("Y координата введена неверно");
             else
                 PanelRendering.task.addPoint(
-                        new Vector2d(xField.doubleValue(), yField.doubleValue()), Point.PointSet.FIRST_SET
+                        new Vector2d(xField.doubleValue(), yField.doubleValue())
                 );
         });
         buttons.add(addToFirstSet);
