@@ -44,6 +44,11 @@ public class Task {
     @Getter
     private final ArrayList<Point> points;
     /**
+     * Список точек
+     */
+    @Getter
+    private final ArrayList<Circle> circles;
+    /**
      * коэффициент колёсика мыши
      */
     private static final float WHEEL_SENSITIVE = 0.001f;
@@ -140,10 +145,12 @@ public class Task {
     @JsonCreator
     public Task(
             @JsonProperty("ownCS") CoordinateSystem2d ownCS,
-            @JsonProperty("points") ArrayList<Point> points
+            @JsonProperty("points") ArrayList<Point> points,
+            @JsonProperty("circles") ArrayList<Circle> circles
     ) {
         this.ownCS = ownCS;
         this.points = points;
+        this.circles = circles;
         this.crossed = new ArrayList<>();
         this.single = new ArrayList<>();
     }

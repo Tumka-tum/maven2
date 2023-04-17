@@ -6,24 +6,35 @@ public class Line {
     Point pointA;
     Point pointB;
 
+
+    double a;
+    double b;
+    double c;
+
     public Line(Point pointA, Point pointB) {
         this.pointA = pointA;
         this.pointB = pointB;
-
+        // коэффициенты канонического уравнения прямой: ax+by+c=0
+        a =0 ;
+        b =0 ;
+        c =0 ;
     }
 
-    public double getDistance(Point pointC){
-        double xA = this.pointA.pos.x;
-        double xB = this.pointB.pos.x;
-        double yA = this.pointA.pos.y;
-        double yB = this.pointB.pos.y;
-        double xC = pointC.pos.x;
-        double yC = pointC.pos.y;
-        double a = yB-yA;
-        double b = xA-xB;
-        double c = yA*xB-yB*xA;
-        double dist = Math.abs(a*xC+b*yC+c)/Math.sqrt(a*a+b*b);
-        return dist;
+    public double getDistance() {
+//        double xA = this.pointA.pos.x;
+//        double xB = this.pointB.pos.x;
+//        double yA = this.pointA.pos.y;
+//        double yB = this.pointB.pos.y;
+//        double xC = pointC.pos.x;
+//        double yC = pointC.pos.y;
+//        double a = yB-yA;
+//        double b = xA-xB;
+//        double c = yA*xB-yB*xA;
+//        double dist = Math.abs(a*xC+b*yC+c)/Math.sqrt(a*a+b*b);
+
+        double dx = pointA.pos.x - pointB.pos.x;
+        double dy = pointA.pos.y - pointB.pos.y;
+        return Math.abs(dx * dx + dy * dy);
     }
 
     @Override
