@@ -3,8 +3,8 @@ package app;
 import java.util.Objects;
 
 public class Line {
-    Point pointA;
-    Point pointB;
+    public Point pointA;
+    public  Point pointB;
 
 
     double a;
