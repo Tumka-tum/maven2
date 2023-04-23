@@ -76,61 +76,60 @@ public class PanelControl extends GridPanel {
         labels = new ArrayList<>();
         buttons = new ArrayList<>();
 
-        int gh = 13;
-
+        int gh = 15;
 
         // задание
         task = new MultiLineLabel(
                 window, false, backgroundColor, PANEL_PADDING,
-                6, gh, 0, 0, 6, 2, Task.TASK_TEXT,
+                6, gh, 0, 0, 6, 6, Task.TASK_TEXT,
                 false, true);
         // добавление вручную
         Label xLabel = new Label(window, false, backgroundColor, PANEL_PADDING,
-                6, gh, 0, 4, 1, 1, "X", true, true);
+                6, gh, 0, 6, 1, 1, "X", true, true);
         labels.add(xLabel);
         Input xField = InputFactory.getInput(window, false, FIELD_BACKGROUND_COLOR, PANEL_PADDING,
-                6, gh, 1, 4, 2, 1, "0.0", true,
+                6, gh, 1, 6, 2, 1, "0.0", true,
                 FIELD_TEXT_COLOR, true);
         inputs.add(xField);
         Label yLabel = new Label(window, false, backgroundColor, PANEL_PADDING,
-                6, gh, 3, 4, 1, 1, "Y", true, true);
+                6, gh, 3, 6, 1, 1, "Y", true, true);
         labels.add(yLabel);
         Input yField = InputFactory.getInput(window, false, FIELD_BACKGROUND_COLOR, PANEL_PADDING,
-                6, gh, 4, 4, 2, 1, "0.0", true,
+                6, gh, 4, 6, 2, 1, "0.0", true,
                 FIELD_TEXT_COLOR, true);
         inputs.add(yField);
         Label x1Label = new Label(window, false, backgroundColor, PANEL_PADDING,
-                6, gh, 0, 7, 1, 1, "X1", true, true);
+                6, gh, 0, 9, 1, 1, "X1", true, true);
         labels.add(x1Label);
         Input x1Field = InputFactory.getInput(window, false, FIELD_BACKGROUND_COLOR, PANEL_PADDING,
-                6, gh, 1, 7, 2, 1, "0.0", true,
+                6, gh, 1, 9, 2, 1, "0.0", true,
                 FIELD_TEXT_COLOR, true);
         inputs.add(x1Field);
         Label y1Label = new Label(window, false, backgroundColor, PANEL_PADDING,
-                6, gh, 3, 7, 1, 1, "Y1", true, true);
+                6, gh, 3, 9, 1, 1, "Y1", true, true);
         labels.add(y1Label);
         Input y1Field = InputFactory.getInput(window, false, FIELD_BACKGROUND_COLOR, PANEL_PADDING,
-                6, gh, 4, 7, 2, 1, "0.0", true,
+                6, gh, 4, 9, 2, 1, "0.0", true,
                 FIELD_TEXT_COLOR, true);
         inputs.add(y1Field);
         Label x2Label = new Label(window, false, backgroundColor, PANEL_PADDING,
-                6, gh, 0, 8, 1, 1, "X2", true, true);
+                6, gh, 0, 10, 1, 1, "X2", true, true);
         labels.add(x2Label);
         Input x2Field = InputFactory.getInput(window, false, FIELD_BACKGROUND_COLOR, PANEL_PADDING,
-                6, gh, 1, 8, 2, 1, "0.0", true,
+                6, gh, 1, 10, 2, 1, "0.0", true,
                 FIELD_TEXT_COLOR, true);
         inputs.add(x2Field);
         Label y2Label = new Label(window, false, backgroundColor, PANEL_PADDING,
-                6, gh, 3, 8, 1, 1, "Y2", true, true);
+                6, gh, 3, 10, 1, 1, "Y2", true, true);
         labels.add(y2Label);
         Input y2Field = InputFactory.getInput(window, false, FIELD_BACKGROUND_COLOR, PANEL_PADDING,
-                6, gh, 4, 8, 2, 1, "0.0", true,
+                6, gh, 4, 10, 2, 1, "0.0", true,
                 FIELD_TEXT_COLOR, true);
         inputs.add(y2Field);
 
         Button addToFirstSet = new Button(
                 window, false, backgroundColor, PANEL_PADDING,
-                5, gh, 1, 5, 3, 1, "Добавить точку",
+                5, gh, 1, 7, 3, 1, "Добавить точку",
                 true, true);
         addToFirstSet.setOnClick(() -> {
             // если числа введены верно
@@ -146,24 +145,24 @@ public class PanelControl extends GridPanel {
         buttons.add(addToFirstSet);
         Button addToCircle = new Button(
                 window, false, backgroundColor, PANEL_PADDING,
-                5, gh, 1, 9, 3, 1, "Добавить окружность",
+                5, gh, 1, 11, 3, 1, "Добавить окружность",
                 true, true);
         buttons.add(addToCircle);
 
 
         // случайное добавление
         Label cntLabel = new Label(window, false, backgroundColor, PANEL_PADDING,
-                6, gh, 0, 6, 1, 1, "Кол-во", true, true);
+                6, gh, 0, 8, 1, 1, "Кол-во", true, true);
         labels.add(cntLabel);
 
         Input cntField = InputFactory.getInput(window, false, FIELD_BACKGROUND_COLOR, PANEL_PADDING,
-                6, gh, 1, 6, 2, 1, "5", true,
+                6, gh, 1, 8, 2, 1, "5", true,
                 FIELD_TEXT_COLOR, true);
         inputs.add(cntField);
 
         Button addPoints = new Button(
                 window, false, backgroundColor, PANEL_PADDING,
-                6, gh, 3, 6, 3, 1, "Добавить\nслучайные точки",
+                6, gh, 3, 8, 3, 1, "Добавить\nслучайные точки",
                 true, true);
         addPoints.setOnClick(() -> {
             // если числа введены верно
@@ -175,24 +174,24 @@ public class PanelControl extends GridPanel {
         buttons.add(addPoints);
 
         Label cnt1Label = new Label(window, false, backgroundColor, PANEL_PADDING,
-                6, gh, 0, 10, 1, 1, "Кол-во", true, true);
+                6, gh, 0, 12, 1, 1, "Кол-во", true, true);
         labels.add(cnt1Label);
 
         Input cnt1Field = InputFactory.getInput(window, false, FIELD_BACKGROUND_COLOR, PANEL_PADDING,
-                6, gh, 1, 10, 2, 1, "5", true,
+                6, gh, 1, 12, 2, 1, "5", true,
                 FIELD_TEXT_COLOR, true);
         inputs.add(cnt1Field);
 
         Button addCircles = new Button(
                 window, false, backgroundColor, PANEL_PADDING,
-                6, gh, 3, 10, 3, 1, "Добавить\nслучайные окружности",
+                6, gh, 3, 12, 3, 1, "Добавить\nслучайные окружности",
                 true, true);
         buttons.add(addCircles);
 
         // управление
         Button load = new Button(
                 window, false, backgroundColor, PANEL_PADDING,
-                6, gh, 0, 11, 3, 1, "Загрузить",
+                6, gh, 0, 13, 3, 1, "Загрузить",
                 true, true);
         load.setOnClick(() -> {
             PanelRendering.load();
@@ -202,21 +201,21 @@ public class PanelControl extends GridPanel {
 
         Button save = new Button(
                 window, false, backgroundColor, PANEL_PADDING,
-                6, gh, 3, 11, 3, 1, "Сохранить",
+                6, gh, 3, 13, 3, 1, "Сохранить",
                 true, true);
         save.setOnClick(PanelRendering::save);
         buttons.add(save);
 
         Button clear = new Button(
                 window, false, backgroundColor, PANEL_PADDING,
-                6, gh, 0, 12, 3, 1, "Очистить",
+                6, gh, 0, 14, 3, 1, "Очистить",
                 true, true);
         clear.setOnClick(() -> PanelRendering.task.clear());
         buttons.add(clear);
 
         solve = new Button(
                 window, false, backgroundColor, PANEL_PADDING,
-                6, gh, 3, 12, 3, 1, "Решить",
+                6, gh, 3, 14, 3, 1, "Решить",
                 true, true);
         solve.setOnClick(() -> {
             if (!PanelRendering.task.isSolved()) {
