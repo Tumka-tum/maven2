@@ -20,22 +20,6 @@ public class Line {
         c = this.pointA.pos.y*this.pointB.pos.x-this.pointB.pos.y*this.pointA.pos.x;
     }
 
-    /*public double getDistance() {
-        double xA = this.pointA.pos.x;
-        double xB = this.pointB.pos.x;
-        double yA = this.pointA.pos.y;
-        double yB = this.pointB.pos.y;
-        double xC = pointC.pos.x;
-        double yC = pointC.pos.y;
-        double a = yB-yA;
-        double b = xA-xB;
-        double c = yA*xB-yB*xA;
-        double dist = Math.abs(a*xC+b*yC+c)/Math.sqrt(a*a+b*b);
-
-        double dx = pointA.pos.x - pointB.pos.x;
-        double dy = pointA.pos.y - pointB.pos.y;
-        return Math.abs(dx * dx + dy * dy);
-    } */
 
     @Override
     public boolean equals(Object o) {
