@@ -52,10 +52,16 @@ public class Task {
     @Getter
     private final ArrayList<Point> points;
     /**
-     * Список точек
+     * Список окружностей
      */
     @Getter
     private final ArrayList<Circle> circles;
+    /**
+     * Список линий
+     */
+    @Getter
+    @JsonIgnore
+    private final ArrayList<Line> lines;
     /**
      * коэффициент колёсика мыши
      */
@@ -76,6 +82,7 @@ public class Task {
         points.clear();
         solved = false;
     }
+
     /**
      * Порядок разделителя сетки, т.е. раз в сколько отсечек
      * будет нарисована увеличенная
@@ -97,6 +104,7 @@ public class Task {
      * Флаг, решена ли задача
      */
     private boolean solved;
+
     /**
      * Решить задачу
      */
@@ -113,7 +121,7 @@ public class Task {
                 Point b = points.get(j);
                 // если точки совпадают по положению
                 if (a.pos.equals(b.pos)) {
-                    if (!crossed.contains(a)){
+                    if (!crossed.contains(a)) {
                         crossed.add(a);
                         crossed.add(b);
                     }
@@ -136,6 +144,7 @@ public class Task {
     public void cancel() {
         solved = false;
     }
+
     /**
      * проверка, решена ли задача
      *
@@ -144,6 +153,7 @@ public class Task {
     public boolean isSolved() {
         return solved;
     }
+
     /**
      * Задача
      *
@@ -159,8 +169,14 @@ public class Task {
         this.ownCS = ownCS;
         this.points = points;
         this.circles = circles;
+
+        circles.add(new Circle(
+                new Point(new Vector2d(0, 0)),
+                new Point(new Vector2d(0, 1))
+        ));
         this.crossed = new ArrayList<>();
         this.single = new ArrayList<>();
+        this.lines = new ArrayList<>();
     }
 
     /**
@@ -177,6 +193,7 @@ public class Task {
         // рисуем задачу
         renderTask(canvas, windowCS);
     }
+
     /**
      * Клик мыши по пространству задачи
      *
@@ -189,6 +206,7 @@ public class Task {
         Vector2d taskPos = ownCS.getCoords(pos, lastWindowCS);
         addPoint(taskPos);
     }
+
     /**
      * Рисование задачи
      *
@@ -200,22 +218,54 @@ public class Task {
         // создаём перо
         try (var paint = new Paint()) {
             for (Point p : points) {
-                    if (crossed.contains(p))
-                        paint.setColor(CROSSED_COLOR);
-                    else
-                        paint.setColor(SUBTRACTED_COLOR);
+                if (crossed.contains(p))
+                    paint.setColor(CROSSED_COLOR);
+                else
+                    paint.setColor(SUBTRACTED_COLOR);
                 // y-координату разворачиваем, потому что у СК окна ось y направлена вниз,
                 // а в классическом представлении - вверх
                 Vector2i windowPos = windowCS.getCoords(p.pos.x, p.pos.y, ownCS);
                 // рисуем точку
                 canvas.drawRect(Rect.makeXYWH(windowPos.x - POINT_SIZE, windowPos.y - POINT_SIZE, POINT_SIZE * 2, POINT_SIZE * 2), paint);
             }
-        }
-        // рисуем линию
-        //canvas.drawLine(cA.x, cA.y, cB.x, cB.y);
+            for (Line l : lines) {
+                // опорные точки линии
+                Vector2i cA = windowCS.getCoords(l.pointA.pos, ownCS);
+                Vector2i cB = windowCS.getCoords(l.pointB.pos, ownCS);
+                // рисуем линию
+                canvas.drawLine(cA.x, cA.y, cB.x, cB.y, paint);
+            }
+            System.out.println("render");
+            for (Circle c : circles) {
+                // центр окружности и точка на окружности
+                Vector2i centre = windowCS.getCoords(c.centre.pos, ownCS);
+                Vector2i circ = windowCS.getCoords(c.circ.pos, ownCS);
+                // радиус окружности
+                double dx = centre.x - circ.x;
+                double dy = centre.y - circ.y;
+                double r = Math.sqrt(dx * dx + dy * dy);
+                // кол-во отсчётов цикла
+                int loopCnt = 40;
+                // создаём массив координат опорных точек
+                float[] points = new float[loopCnt * 4];
+                // запускаем цикл
+                for (int i = 0; i < loopCnt; i++) {
+                    // x координата первой точки
+                    points[i * 4] = (float) (centre.x + r * Math.cos(Math.PI / 20 * i));
+                    // y координата первой точки
+                    points[i * 4 + 1] = (float) (centre.y + r* Math.sin(Math.PI / 20 * i));
 
+                    // x координата второй точки
+                    points[i * 4 + 2] = (float) (centre.x + r * Math.cos(Math.PI / 20 * (i + 1)));
+                    // y координата второй точки
+                    points[i * 4 + 3] = (float) (centre.y + r * Math.sin(Math.PI / 20 * (i + 1)));
+                }
+                canvas.drawLines(points, paint);
+            }
+        }
         canvas.restore();
     }
+
     /**
      * Рисование сетки
      *
@@ -253,10 +303,11 @@ public class Task {
         // восстанавливаем область рисования
         canvas.restore();
     }
+
     /**
      * Добавить точку
      *
-     * @param pos      положение
+     * @param pos положение
      */
     public void addPoint(Vector2d pos) {
         solved = false;
@@ -265,6 +316,7 @@ public class Task {
         // Добавляем в лог запись информации
         PanelLog.info("точка " + newPoint + " добавлена");
     }
+
     /**
      * Добавить случайные точки
      *
@@ -289,6 +341,7 @@ public class Task {
             addPoint(pos);
         }
     }
+
     /**
      * Масштабирование области просмотра задачи
      *
@@ -302,6 +355,7 @@ public class Task {
         // выполняем масштабирование
         ownCS.scale(1 + delta * WHEEL_SENSITIVE, realCenter);
     }
+
     /**
      * Получить положение курсора мыши в СК задачи
      *
@@ -314,6 +368,7 @@ public class Task {
     public Vector2d getRealPos(int x, int y, CoordinateSystem2i windowCS) {
         return ownCS.getCoords(x, y, windowCS);
     }
+
     /**
      * Рисование курсора мыши
      *
