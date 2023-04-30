@@ -204,7 +204,9 @@ public class Task {
         if (lastWindowCS == null) return;
         // получаем положение на экране
         Vector2d taskPos = ownCS.getCoords(pos, lastWindowCS);
-        addPoint(taskPos);
+        if (mouseButton.equals(MouseButton.PRIMARY)) {
+            addPoint(taskPos);
+        }
     }
 
     /**
@@ -235,7 +237,6 @@ public class Task {
                 // рисуем линию
                 canvas.drawLine(cA.x, cA.y, cB.x, cB.y, paint);
             }
-            System.out.println("render");
             for (Circle c : circles) {
                 // центр окружности и точка на окружности
                 Vector2i centre = windowCS.getCoords(c.centre.pos, ownCS);
@@ -340,6 +341,25 @@ public class Task {
             Vector2d pos = ownCS.getCoords(gridPos, addGrid);
             addPoint(pos);
         }
+    }
+
+    /**
+     * Добавить окружность
+     */
+    public void addCircle(double x1, double y1, double x2, double y2) {
+        Vector2d pointCentre = new Vector2d(x1,y1);
+        Vector2d pointCirc = new Vector2d(x2,y2);
+        circles = new Circle(new Point(pointCentre), new Point(pointCirc));
+    }
+
+    /**
+     * Добавить случайную окружность
+     */
+    public void addRandomCircle() {
+        solved = false;
+        Vector2d pointA = ownCS.getRandomCoords();
+        Vector2d pointB = ownCS.getRandomCoords();
+        circles = new Circle(new Point(pointA), new Point(pointB));
     }
 
     /**

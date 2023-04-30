@@ -143,15 +143,19 @@ public class PanelControl extends GridPanel {
                 );
         });
         buttons.add(addToFirstSet);
+
         Button addToCircle = new Button(
                 window, false, backgroundColor, PANEL_PADDING,
                 5, gh, 1, 11, 3, 1, "Добавить окружность",
                 true, true);
+        addToCircle.setOnClick(() -> {
+                    PanelRendering.task.addCircle(x1Field.doubleValue(),y1Field.doubleValue(),x2Field.doubleValue(),y2Field.doubleValue());
+                });
         buttons.add(addToCircle);
 
 
         // случайное добавление
-        Label cntLabel = new Label(window, false, backgroundColor, PANEL_PADDING,
+        Label cntLabel = new Label(window,false, backgroundColor, PANEL_PADDING,
                 6, gh, 0, 8, 1, 1, "Кол-во", true, true);
         labels.add(cntLabel);
 
@@ -182,11 +186,14 @@ public class PanelControl extends GridPanel {
                 FIELD_TEXT_COLOR, true);
         inputs.add(cnt1Field);
 
-        Button addCircles = new Button(
+
+        Button addRandCircles = new Button(
                 window, false, backgroundColor, PANEL_PADDING,
                 6, gh, 3, 12, 3, 1, "Добавить\nслучайные окружности",
                 true, true);
-        buttons.add(addCircles);
+        buttons.add(addRandCircles);
+        addRandCircles.setOnClick(() -> PanelRendering.task.addRandomCircle());
+
 
         // управление
         Button load = new Button(
