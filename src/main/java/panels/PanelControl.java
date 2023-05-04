@@ -192,7 +192,7 @@ public class PanelControl extends GridPanel {
                 6, gh, 3, 12, 3, 1, "Добавить\nслучайные окружности",
                 true, true);
         buttons.add(addRandCircles);
-        addRandCircles.setOnClick(() -> PanelRendering.task.addRandomCircle());
+        addRandCircles.setOnClick(() -> PanelRendering.task.addRandomCircle(cnt1Field.intValue()));
 
 
         // управление
