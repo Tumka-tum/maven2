@@ -201,12 +201,20 @@ public class Task {
      * @param pos         положение мыши
      * @param mouseButton кнопка мыши
      */
+    Vector2d prevClickPos = null;
     public void click(Vector2i pos, MouseButton mouseButton) {
         if (lastWindowCS == null) return;
         // получаем положение на экране
         Vector2d taskPos = ownCS.getCoords(pos, lastWindowCS);
         if (mouseButton.equals(MouseButton.PRIMARY)) {
             addPoint(taskPos);
+        } else if (mouseButton.equals(MouseButton.SECONDARY)) {
+            if (prevClickPos != null) {
+                circles.add(new Circle(new Point(prevClickPos), new Point(taskPos)));
+                prevClickPos = null;
+            } else {
+                prevClickPos = taskPos;
+            }
         }
     }
 
