@@ -80,6 +80,7 @@ public class Task {
      */
     public void clear() {
         points.clear();
+        circles.clear();
         solved = false;
     }
 
@@ -349,17 +350,22 @@ public class Task {
     public void addCircle(double x1, double y1, double x2, double y2) {
         Vector2d pointCentre = new Vector2d(x1,y1);
         Vector2d pointCirc = new Vector2d(x2,y2);
-        circles = new Circle(new Point(pointCentre), new Point(pointCirc));
+        circles.add(new Circle(new Point(pointCentre), new Point(pointCirc)));
     }
 
     /**
      * Добавить случайную окружность
+     *
+     * @param cnt кол-во случайных окружностей
      */
-    public void addRandomCircle() {
-        solved = false;
-        Vector2d pointA = ownCS.getRandomCoords();
-        Vector2d pointB = ownCS.getRandomCoords();
-        circles = new Circle(new Point(pointA), new Point(pointB));
+    public void addRandomCircle(int cnt) {
+        // повторяем заданное количество раз
+        for (int i = 0; i < cnt; i++) {
+            solved = false;
+            Vector2d pointA = ownCS.getRandomCoords();
+            Vector2d pointB = ownCS.getRandomCoords();
+            circles.add(new Circle(new Point(pointA), new Point(pointB)));
+        }
     }
 
     /**
