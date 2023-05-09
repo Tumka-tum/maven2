@@ -12,6 +12,7 @@ import misc.CoordinateSystem2i;
 import misc.Vector2d;
 import misc.Vector2i;
 import panels.PanelLog;
+import panels.PanelRendering;
 
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
@@ -114,29 +115,58 @@ public class Task {
         crossed.clear();
         single.clear();
 
+//        // перебираем пары точек
+//        for (int i = 0; i < points.size(); i++) {
+//            for (int j = i + 1; j < points.size(); j++) {
+//                // сохраняем точки
+//                Point a = points.get(i);
+//                Point b = points.get(j);
+//                // если точки совпадают по положению
+//                if (a.pos.equals(b.pos)) {
+//                    if (!crossed.contains(a)) {
+//                        crossed.add(a);
+//                        crossed.add(b);
+//                    }
+//                }
+//            }
+//        }
+        Point p1 = rect.a;
+        Point p2 = new Point(new Vector2d(rect.a.pos.x, rect.c.pos.y));
+        Point p3 = rect.c;
+        Point p4 = new Point(new Vector2d(rect.c.pos.x, rect.a.pos.y));
         // перебираем пары точек
-        for (int i = 0; i < points.size(); i++) {
-            for (int j = i + 1; j < points.size(); j++) {
+        if (p1.pos.x == p3.pos.x || p1.pos.y == p3.pos.y) {
+            solved = false;
+            return;
+        }
+        int m = points.size();
+        int n = circles.size();
+        for (int i = 0; i < m - 1; i++) {
+            for (int j = i + 1; j < m; j++) {
                 // сохраняем точки
                 Point a = points.get(i);
                 Point b = points.get(j);
-                // если точки совпадают по положению
-                if (a.pos.equals(b.pos)) {
-                    if (!crossed.contains(a)) {
-                        crossed.add(a);
-                        crossed.add(b);
+                Line line = new Line(a, b);
+                Line minline = null;
+                for (int k = 0; k < n; k++){
+                    // получаю центр и точку на окружности каждой окружности
+                    Point c = getCircles(centre);
+                    Point d = getCircles(circ);
+                    // ищу пересечение с линией
+                    Line templine = cross(line);
+                    if (minline == null || templine < minline){
+                        minline = templine;
                     }
                 }
             }
         }
 
-        /// добавляем вс
+            /// добавляем вс
         for (Point point : points)
-            if (!crossed.contains(point))
+            if (!crossed.contains(point) || !lines.contains(point))
                 single.add(point);
-
-        // задача решена
-        solved = true;
+            // задача решена
+            solved = true;
     }
 
     /**
@@ -171,10 +201,7 @@ public class Task {
         this.points = points;
         this.circles = circles;
 
-        circles.add(new Circle(
-                new Point(new Vector2d(0, 0)),
-                new Point(new Vector2d(0, 1))
-        ));
+
         this.crossed = new ArrayList<>();
         this.single = new ArrayList<>();
         this.lines = new ArrayList<>();
