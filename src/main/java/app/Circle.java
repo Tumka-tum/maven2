@@ -32,7 +32,7 @@ public class Circle {
             // найти координаты точек пересечения
             t = l.a * l.a + l.b * l.b;
             v = l.a * l.b * centre.pos.x + l.b * l.c - l.a * l.a * centre.pos.y;
-            k = l.a * l.a * centre.pos.x * centre.pos.x + l.a * l.c + l.c * l.c + l.a * l.a * centre.pos.y - rad * rad * l.a * l.a;
+            k =l.c * l.c +  2 * l.a * l.c * centre.pos.x + l.a * l.a * centre.pos.x * centre.pos.x + l.a * l.a * centre.pos.y * centre.pos.y - rad * rad * l.a * l.a;
             y1 = (-v + Math.sqrt(v * v - t * k)) / t;
             y2 = (-v - Math.sqrt(v * v - t * k)) / t;
             x1 = -(l.b * y1 + l.c) / l.a;

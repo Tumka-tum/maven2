@@ -23,7 +23,7 @@ public class Test {
         Line l = new Line(new Point(new Vector2d(1, 1)), new Point(new Vector2d(2, 0)));
 
         Line r = c.cross(l);
-        System.out.println(r.pointA + " " + r.pointB);
+        System.out.println(r.pointA.pos.x + " " + r.pointA.pos.y + " " + r.pointB.pos.x + " " + r.pointB.pos.x + " ");
 
         assert r != null;
     }
@@ -35,7 +35,7 @@ public class Test {
         Line l = new Line(new Point(new Vector2d(1, 1)), new Point(new Vector2d(2, 1)));
 
         Line r = c.cross(l);
-        System.out.println(r.pointA + " " + r.pointB);
+        System.out.println(r.pointA.pos.x + " " + r.pointA.pos.y + " " + r.pointB.pos.x + " " + r.pointB.pos.x + " ");
 
         assert r != null;
     }

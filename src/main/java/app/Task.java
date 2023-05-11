@@ -79,6 +79,7 @@ public class Task {
     public void clear() {
         points.clear();
         circles.clear();
+        minline = null;
         solved = false;
     }
 
@@ -153,6 +154,10 @@ public class Task {
                 }
             }
         }
+        if (minline != null)
+            System.out.println(minline.pointA.pos + " " + minline.pointB.pos);
+        else
+            System.out.println("NULL");
 
         // задача решена
         solved = true;
@@ -289,12 +294,21 @@ public class Task {
                 canvas.drawLines(points, paint);
             }
             if (minline != null) {
-                paint.setColor(Misc.getColor(200, 100, 100, 50));
+                paint.setColor(Misc.getColor(255, 255, 255, 255));
                 // опорные точки линии
-                Vector2i cA = windowCS.getCoords(minline.pointA.pos, ownCS);
-                Vector2i cB = windowCS.getCoords(minline.pointB.pos, ownCS);
-                // рисуем линию
-                canvas.drawLine(cA.x, cA.y, cB.x, cB.y, paint);
+                Vector2i pointA = windowCS.getCoords(minline.pointA.pos, ownCS);
+                canvas.drawRect(Rect.makeXYWH(pointA.x - 3, pointA.y - 3, 6, 6), paint);
+                Vector2i pointB = windowCS.getCoords(minline.pointB.pos, ownCS);
+                canvas.drawRect(Rect.makeXYWH(pointB.x - 3, pointB.y - 3, 6, 6), paint);
+                // вектор, ведущий из точки A в точку B
+                Vector2i delta = Vector2i.subtract(pointA, pointB);
+                // получаем максимальную длину отрезка на экране, как длину диагонали экрана
+                int maxDistance = (int) windowCS.getSize().length();
+                // получаем новые точки для рисования, которые гарантируют, что линия
+                // будет нарисована до границ экрана
+                Vector2i renderPointA = Vector2i.sum(pointA, Vector2i.mult(delta, maxDistance));
+                Vector2i renderPointB = Vector2i.sum(pointA, Vector2i.mult(delta, -maxDistance));
+                canvas.drawLine(renderPointA.x, renderPointA.y, renderPointB.x, renderPointB.y, paint);
             }
         }
         canvas.restore();

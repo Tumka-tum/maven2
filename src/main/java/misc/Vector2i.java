@@ -29,6 +29,10 @@ public class Vector2i {
         this.y = y;
     }
 
+    public static Vector2i mult(Vector2i delta, int maxDistance) {
+        return new Vector2i(delta.x*maxDistance,delta.y*maxDistance);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
