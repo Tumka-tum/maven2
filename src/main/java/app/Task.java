@@ -7,10 +7,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import io.github.humbleui.jwm.MouseButton;
 import io.github.humbleui.skija.*;
 import lombok.Getter;
-import misc.CoordinateSystem2d;
-import misc.CoordinateSystem2i;
-import misc.Vector2d;
-import misc.Vector2i;
+import misc.*;
 import panels.PanelLog;
 import panels.PanelRendering;
 
@@ -107,6 +104,8 @@ public class Task {
      */
     private boolean solved;
 
+    Line minline;
+
     /**
      * Решить задачу
      */
@@ -115,30 +114,23 @@ public class Task {
         crossed.clear();
         single.clear();
 
-//        // перебираем пары точек
-//        for (int i = 0; i < points.size(); i++) {
-//            for (int j = i + 1; j < points.size(); j++) {
-//                // сохраняем точки
-//                Point a = points.get(i);
-//                Point b = points.get(j);
-//                // если точки совпадают по положению
-//                if (a.pos.equals(b.pos)) {
-//                    if (!crossed.contains(a)) {
-//                        crossed.add(a);
-//                        crossed.add(b);
-//                    }
-//                }
-//            }
-//        }
-        Point p1 = rect.a;
-        Point p2 = new Point(new Vector2d(rect.a.pos.x, rect.c.pos.y));
-        Point p3 = rect.c;
-        Point p4 = new Point(new Vector2d(rect.c.pos.x, rect.a.pos.y));
         // перебираем пары точек
-        if (p1.pos.x == p3.pos.x || p1.pos.y == p3.pos.y) {
-            solved = false;
-            return;
+        for (int i = 0; i < points.size(); i++) {
+            for (int j = i + 1; j < points.size(); j++) {
+                // сохраняем точки
+                Point a = points.get(i);
+                Point b = points.get(j);
+                // если точки совпадают по положению
+                if (a.pos.equals(b.pos)) {
+                    if (!crossed.contains(a)) {
+                        crossed.add(a);
+                        crossed.add(b);
+                    }
+                }
+            }
         }
+
+        minline = null;
         int m = points.size();
         int n = circles.size();
         for (int i = 0; i < m - 1; i++) {
@@ -147,26 +139,23 @@ public class Task {
                 Point a = points.get(i);
                 Point b = points.get(j);
                 Line line = new Line(a, b);
-                Line minline = null;
-                for (int k = 0; k < n; k++){
-                    // получаю центр и точку на окружности каждой окружности
-                    Point c = getCircles(centre);
-                    Point d = getCircles(circ);
+
+
+                for (int k = 0; k < circles.size(); k++) {
+                    Circle circ = circles.get(k);
                     // ищу пересечение с линией
-                    Line templine = cross(line);
-                    if (minline == null || templine < minline){
+                    Line templine = circ.cross(line);
+                    if (templine == null)
+                        continue;
+                    if (minline == null || templine.getDist() < minline.getDist()) {
                         minline = templine;
                     }
                 }
             }
         }
 
-            /// добавляем вс
-        for (Point point : points)
-            if (!crossed.contains(point) || !lines.contains(point))
-                single.add(point);
-            // задача решена
-            solved = true;
+        // задача решена
+        solved = true;
     }
 
     /**
@@ -229,6 +218,7 @@ public class Task {
      * @param mouseButton кнопка мыши
      */
     Vector2d prevClickPos = null;
+
     public void click(Vector2i pos, MouseButton mouseButton) {
         if (lastWindowCS == null) return;
         // получаем положение на экране
@@ -255,17 +245,16 @@ public class Task {
         canvas.save();
         // создаём перо
         try (var paint = new Paint()) {
+            paint.setColor(CROSSED_COLOR);
             for (Point p : points) {
-                if (crossed.contains(p))
-                    paint.setColor(CROSSED_COLOR);
-                else
-                    paint.setColor(SUBTRACTED_COLOR);
+
                 // y-координату разворачиваем, потому что у СК окна ось y направлена вниз,
                 // а в классическом представлении - вверх
                 Vector2i windowPos = windowCS.getCoords(p.pos.x, p.pos.y, ownCS);
                 // рисуем точку
                 canvas.drawRect(Rect.makeXYWH(windowPos.x - POINT_SIZE, windowPos.y - POINT_SIZE, POINT_SIZE * 2, POINT_SIZE * 2), paint);
             }
+            paint.setColor(SUBTRACTED_COLOR);
             for (Line l : lines) {
                 // опорные точки линии
                 Vector2i cA = windowCS.getCoords(l.pointA.pos, ownCS);
@@ -290,7 +279,7 @@ public class Task {
                     // x координата первой точки
                     points[i * 4] = (float) (centre.x + r * Math.cos(Math.PI / 20 * i));
                     // y координата первой точки
-                    points[i * 4 + 1] = (float) (centre.y + r* Math.sin(Math.PI / 20 * i));
+                    points[i * 4 + 1] = (float) (centre.y + r * Math.sin(Math.PI / 20 * i));
 
                     // x координата второй точки
                     points[i * 4 + 2] = (float) (centre.x + r * Math.cos(Math.PI / 20 * (i + 1)));
@@ -298,6 +287,14 @@ public class Task {
                     points[i * 4 + 3] = (float) (centre.y + r * Math.sin(Math.PI / 20 * (i + 1)));
                 }
                 canvas.drawLines(points, paint);
+            }
+            if (minline != null) {
+                paint.setColor(Misc.getColor(200, 100, 100, 50));
+                // опорные точки линии
+                Vector2i cA = windowCS.getCoords(minline.pointA.pos, ownCS);
+                Vector2i cB = windowCS.getCoords(minline.pointB.pos, ownCS);
+                // рисуем линию
+                canvas.drawLine(cA.x, cA.y, cB.x, cB.y, paint);
             }
         }
         canvas.restore();
@@ -383,8 +380,8 @@ public class Task {
      * Добавить окружность
      */
     public void addCircle(double x1, double y1, double x2, double y2) {
-        Vector2d pointCentre = new Vector2d(x1,y1);
-        Vector2d pointCirc = new Vector2d(x2,y2);
+        Vector2d pointCentre = new Vector2d(x1, y1);
+        Vector2d pointCirc = new Vector2d(x2, y2);
         circles.add(new Circle(new Point(pointCentre), new Point(pointCirc)));
     }
 

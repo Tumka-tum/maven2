@@ -4,7 +4,7 @@ import java.util.Objects;
 
 public class Line {
     public Point pointA;
-    public  Point pointB;
+    public Point pointB;
 
 
     double a;
@@ -15,9 +15,16 @@ public class Line {
         this.pointA = pointA;
         this.pointB = pointB;
         // коэффициенты канонического уравнения прямой: ax+by+c=0
-        a = this.pointB.pos.y-this.pointA.pos.y;
-        b = this.pointA.pos.x-this.pointB.pos.x;
-        c = this.pointA.pos.y*this.pointB.pos.x-this.pointB.pos.y*this.pointA.pos.x;
+        a = this.pointB.pos.y - this.pointA.pos.y;
+        b = this.pointA.pos.x - this.pointB.pos.x;
+        c = this.pointA.pos.y * this.pointB.pos.x - this.pointB.pos.y * this.pointA.pos.x;
+    }
+
+
+    public double getDist() {
+        double dx = pointA.pos.x - pointB.pos.x;
+        double dy = pointA.pos.y - pointB.pos.y;
+        return Math.sqrt(dx * dx + dy * dy);
     }
 
 
