@@ -89,7 +89,7 @@ public class Task {
      */
     private static final int DELIMITER_ORDER = 10;
     /**
-     * Список точек в пересечении
+     * Список точек в перeсечении
      */
     @Getter
     @JsonIgnore
